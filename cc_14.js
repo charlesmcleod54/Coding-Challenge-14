@@ -29,7 +29,7 @@ function createSupportTicket(customerName, issueDescription, priorityLevel) {
 
 // Task 3: Converting NodeLists to Arrays for Bulk Updates
 function highlightHighPriorityTickets() {
-    const highPriorityTickets = document.querySelectorAll(."ticket label");
+    const highPriorityTickets = document.querySelectorAll(".ticket label");
 
     const ticketsArray = Array.from(highPriorityTickets);
 
@@ -79,3 +79,31 @@ function createSupportTicket(customerName, issueDescription, priorityLevel) {
     ticketContainer.appendChild(ticket);
 }
 
+// Task 5: Additional Challenge - Inline Editing of Support Tickets
+function enableInlineEditing(ticket) {
+    const name = ticket.querySelector("h3");
+    const issue = ticket.querySelector("p");
+    const priority = ticket.querySelector("label");
+
+    name.innerHTML = '<input type="text" value="${name.textContent}">';
+    issue.innerHTML = '<input type="text" value="${issue.texteContent}">';
+    priority.innerHTML = '<input type"text" value="${priority.textContent.replace("Priority: ", "")}">';
+
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Save";
+    ticket.appendChild(saveButton);
+
+    saveButton.addEventListener("click", function() {
+        name.textContent = name.querySelector("input").value;
+        issue.textContent = issue.querySelector("input").value;
+        priority.textContent = 'Priority: ${priority.querySelector("input").value}';
+
+        saveButton.remove();
+    });
+}
+
+document.getElementById("ticketContainer").addEventListener("dblclick", function(event) {
+    if (event.target.closest(".ticket")) {
+        enableInlineEditing(event.target.closest(".ticket"));
+    }
+});
